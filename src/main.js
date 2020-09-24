@@ -2,7 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import './assets/style/index.css'
+import 'vue-awesome/icons'
+import Axios from 'axios';
 
+const axios = Axios.create({ baseURL: 'http://localhost:8787/stock-api' });
+
+Vue.prototype.$http = axios;
 Vue.config.productionTip = false
 
 new Vue({
