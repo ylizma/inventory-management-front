@@ -12,7 +12,7 @@
               class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
             >
               <th class="px-4 py-3">name</th>
-              <th class="px-4 py-3">code</th>
+              <th class="px-4 py-3">description</th>
               <th class="px-4 py-3">active</th>
               <th class="px-4 py-3">Date</th>
               <th class="px-4 py-3">Actions</th>
@@ -23,19 +23,19 @@
           >
             <tr
               class="text-gray-700 dark:text-gray-400"
-              v-for="(pg, index) in productgroups"
+              v-for="(warehouse, index) in warehouses"
               :key="index"
             >
               <td class="px-4 py-3">
-                {{ pg.name }}
+                {{ warehouse.name }}
               </td>
               <td class="px-4 py-3 text-sm">
-                {{ pg.code }}
+                {{ warehouse.description ||'no description' }}
               </td>
               <td class="px-4 py-3 text-xs">
                 <span
                   class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
-                  v-if="pg.active"
+                  v-if="warehouse.active"
                 >
                   YES
                 </span>
@@ -47,15 +47,15 @@
                 </span>
               </td>
               <td class="px-4 py-3 text-sm">
-                {{ pg.createdAt.slice(0, 10) }}
+                {{ warehouse.createdAt.slice(0, 10) }}
               </td>
               <td class="px-4 py-3">
                 <div class="flex items-center space-x-4 text-sm">
-                  <update-form :productGroup="pg" />
+                  <!-- <update-form :productGroup="warehouse" /> -->
                   <button
                     class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                     aria-label="Delete"
-                    @click="deleteProductGroup(pg.code)"
+                    @click="deleteWarehouse(warehouse.id)"
                   >
                     <svg
                       class="w-5 h-5"
@@ -130,17 +130,16 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import SearchForm from "@/components/shared/SearchForm.vue";
-import UpdateForm from "@/components/productGroup/UpdateForm.vue";
+// import UpdateForm from "@/components/productGroup/UpdateForm.vue";
 export default {
   components: {
     SearchForm,
-    UpdateForm
+    // UpdateForm
   },
   data() {
     return {
-      productgroups: [],
+      warehouses: [],
       config : {
         headers: {
           Authorization: "Bearer " + this.$store.getters.getToken,
@@ -154,10 +153,9 @@ export default {
   methods: {
     loadData() {
       this.$http
-        .get("/productgroups/all", this.config)
+        .get("/warehouses/all", this.config)
         .then((res) => {
-          this.productgroups = res.data;
-          console.log(res.data);
+          this.warehouses = res.data;
         })
         .catch((err) => {
           if (err.response.status == 403) {
@@ -167,19 +165,19 @@ export default {
     },
     search(key) {
       if (key) {
-        this.productgroups=this.productgroups.filter((item) => {
-          return item.name.includes(key) || item.code.includes(key);
+        this.warehouses=this.warehouses.filter((item) => {
+          return item.name.includes(key);
         });
       }else{
         this.loadData();
       }
     },
-    addNewProductGroupToList(pg){
+    addNewWareHouseToList(pg){
       this.productgroups.unshift(pg);
     },
-    deleteProductGroup(id){
+    deleteWarehouse(id){
       this.$http
-      .delete("/productgroups/"+id)
+      .delete("/warehouses/"+id)
       .then(res=>{
         console.log(res);
       })
