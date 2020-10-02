@@ -1,6 +1,5 @@
 <template>
   <div class="">
-
     <!-- search form component -->
     <search-form v-on:search="search" />
 
@@ -30,7 +29,7 @@
                 {{ warehouse.name }}
               </td>
               <td class="px-4 py-3 text-sm">
-                {{ warehouse.description ||'no description' }}
+                {{ warehouse.description || "no description" }}
               </td>
               <td class="px-4 py-3 text-xs">
                 <span
@@ -46,12 +45,12 @@
                   NO
                 </span>
               </td>
-              <td class="px-4 py-3 text-sm">
+              <td class="px-4 py-3 text-sm" v-show="warehouse.createdAt">
                 {{ warehouse.createdAt.slice(0, 10) }}
               </td>
               <td class="px-4 py-3">
                 <div class="flex items-center space-x-4 text-sm">
-                  <!-- <update-form :productGroup="warehouse" /> -->
+                  <update-form :warehouse="warehouse" />
                   <button
                     class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                     aria-label="Delete"
@@ -131,20 +130,20 @@
 
 <script>
 import SearchForm from "@/components/shared/SearchForm.vue";
-// import UpdateForm from "@/components/productGroup/UpdateForm.vue";
+import UpdateForm from "@/components/warehouse/UpdateForm.vue";
 export default {
   components: {
     SearchForm,
-    // UpdateForm
+    UpdateForm
   },
   data() {
     return {
       warehouses: [],
-      config : {
+      config: {
         headers: {
           Authorization: "Bearer " + this.$store.getters.getToken,
-        }
-      }
+        },
+      },
     };
   },
   created() {
@@ -159,32 +158,32 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 403) {
-            this.$router.push('/login')
+            this.$router.push("/login");
           }
         });
     },
     search(key) {
       if (key) {
-        this.warehouses=this.warehouses.filter((item) => {
+        this.warehouses = this.warehouses.filter((item) => {
           return item.name.includes(key);
         });
-      }else{
+      } else {
         this.loadData();
       }
     },
-    addNewWareHouseToList(pg){
-      this.productgroups.unshift(pg);
+    addNewWareHouseToList(pg) {
+      this.warehouses.unshift(pg);
     },
-    deleteWarehouse(id){
+    deleteWarehouse(id) {
       this.$http
-      .delete("/warehouses/"+id)
-      .then(res=>{
-        console.log(res);
-      })
-      .catch(err=>{
-        console.error(err);
-      });
-    }
+        .delete("/warehouses/" + id)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
 };
 </script>

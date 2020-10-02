@@ -1,6 +1,5 @@
 <template>
   <div class="">
-
     <!-- search form component -->
     <search-form v-on:search="search" />
 
@@ -136,16 +135,16 @@ import UpdateForm from "@/components/productGroup/UpdateForm.vue";
 export default {
   components: {
     SearchForm,
-    UpdateForm
+    UpdateForm,
   },
   data() {
     return {
       productgroups: [],
-      config : {
+      config: {
         headers: {
           Authorization: "Bearer " + this.$store.getters.getToken,
-        }
-      }
+        },
+      },
     };
   },
   created() {
@@ -161,32 +160,32 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 403) {
-            this.$router.push('/login')
+            this.$router.push("/login");
           }
         });
     },
     search(key) {
       if (key) {
-        this.productgroups=this.productgroups.filter((item) => {
+        this.productgroups = this.productgroups.filter((item) => {
           return item.name.includes(key) || item.code.includes(key);
         });
-      }else{
+      } else {
         this.loadData();
       }
     },
-    addNewProductGroupToList(pg){
+    addNewProductGroupToList(pg) {
       this.productgroups.unshift(pg);
     },
-    deleteProductGroup(id){
+    deleteProductGroup(id) {
       this.$http
-      .delete("/productgroups/"+id)
-      .then(res=>{
-        console.log(res);
-      })
-      .catch(err=>{
-        console.error(err);
-      });
-    }
+        .delete("/productgroups/" + id)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
 };
 </script>

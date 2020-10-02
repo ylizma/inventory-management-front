@@ -21,23 +21,13 @@ const links = [
     },
     {
         name:'product group list',
-        linkTo:'/productglists',
+        linkTo:'/productgroup',
         iconName:'layer-group'
     },
     {
-        name:'add product group',
-        linkTo:'/addproductgroup',
-        iconName:'plus-square'
-    },
-    {
         name:'warehouse list',
-        linkTo:'/warehouses',
+        linkTo:'/warehouse',
         iconName:'warehouse'
-    },
-    {
-        name:'add warehouse',
-        linkTo:'/addwarehouse',
-        iconName:'cubes'
     }
 ]
 

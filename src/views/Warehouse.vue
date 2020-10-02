@@ -1,7 +1,7 @@
 <template>
   <div class="">
-      <add-form />
-      <ware-house-list />
+      <add-form v-on:addToList="addNewWareHouseToList" />
+      <ware-house-list ref="wareHouseList" />
   </div>
 </template>
 
@@ -12,7 +12,12 @@ export default {
 components:{
     WareHouseList,
     AddForm
-}
+},
+methods: {
+  addNewWareHouseToList(wh){
+    this.$refs.wareHouseList.addNewWareHouseToList(wh)
+  }
+},
 }
 </script>
 
