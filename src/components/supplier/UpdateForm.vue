@@ -1,11 +1,21 @@
 <template>
-  <div class="pt-5">
+  <div class="">
     <div>
       <button
+        class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+        aria-label="Edit"
         @click="isModalOpen = true"
-        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
       >
-        New Product Group
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+          ></path>
+        </svg>
       </button>
     </div>
     <div
@@ -14,7 +24,7 @@
     >
       <!-- Modal -->
       <div
-        v-show="isModalOpen"
+        v-if="isModalOpen"
         @keydown.esc="isModalOpen = false"
         class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl"
         role="dialog"
@@ -50,7 +60,7 @@
             <p
               class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300"
             >
-              Product Group Form
+              Supplier Form
             </p>
 
             <div class="px-4 py-3 mb-8 rounded-lg shadow-sm dark:bg-gray-800">
@@ -63,21 +73,63 @@
                   <input
                     class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                     placeholder="Name"
-                    v-model="name"
+                    v-model="supplier.name"
                     required
                   />
                 </div>
               </label>
               <label class="block text-sm pb-3">
-                <span class="text-gray-700 dark:text-gray-400">Code</span>
+                <span class="text-gray-700 dark:text-gray-400">address</span>
                 <!-- focus-within sets the color for the icon when input is focused -->
                 <div
                   class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
                 >
                   <input
                     class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                    placeholder="code"
-                    v-model="code"
+                    placeholder="address"
+                    v-model="supplier.address"
+                    required
+                  />
+                </div>
+              </label>
+              <label class="block text-sm pb-3">
+                <span class="text-gray-700 dark:text-gray-400">city</span>
+                <!-- focus-within sets the color for the icon when input is focused -->
+                <div
+                  class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
+                >
+                  <input
+                    class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                    placeholder="city"
+                    v-model="supplier.city"
+                    required
+                  />
+                </div>
+              </label>
+              <label class="block text-sm pb-3">
+                <span class="text-gray-700 dark:text-gray-400">phone</span>
+                <!-- focus-within sets the color for the icon when input is focused -->
+                <div
+                  class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
+                >
+                  <input
+                    class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                    placeholder="phone"
+                    v-model="supplier.phone"
+                    required
+                  />
+                </div>
+              </label>
+              <label class="block text-sm pb-3">
+                <span class="text-gray-700 dark:text-gray-400">fax</span>
+                <!-- focus-within sets the color for the icon when input is focused -->
+                <div
+                  class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
+                >
+                  <input
+                    class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                    placeholder="fax"
+                    v-model="supplier.fax"
                     required
                   />
                 </div>
@@ -87,7 +139,7 @@
                 <input
                   type="checkbox"
                   class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                  v-model="active"
+                  v-model="supplier.active"
                 />
                 <span class="ml-2">
                   Active
@@ -113,7 +165,7 @@
               Cancel
             </button>
             <button
-            type="submit"
+              type="submit"
               class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
             >
               Save
@@ -127,43 +179,36 @@
 
 <script>
 export default {
+  props: ["supplier"],
   data() {
     return {
       isModalOpen: false,
-      name: "",
-      code: "",
-      active: false,
       error: false,
       success: false,
       msg: "",
     };
   },
   methods: {
-    async  sendData() {
+    sendData() {
       const config = {
         headers: {
           Authorization: "Bearer " + this.$store.getters.getToken,
         },
       };
-      const pgroup = {
-        name: this.name,
-        code: this.code,
-        active: this.active,
-      };
       this.$http
-        .post("/productgroups/add", pgroup, config)
+        .put("/suppliers/" + this.supplier.id, this.supplier, config)
         .then((res) => {
-          this.msg = "the product group is successfully added !! ";
+          console.log(res);
           this.success = true;
-          this.$emit('addToList',res.data)
+          this.msg = "the supplier is successfuly updated";
         })
         .catch((err) => {
           if (err.response.status == 400) {
             console.error(err);
-            this.msg = "this product already exist !!";
+            this.msg = "this warehouse already exist !!";
             this.error = true;
           } else if (err.response.status == 403) {
-            this.$router.push({ name: 'login'});
+            this.$router.push({ name: "login" });
           }
         });
     },

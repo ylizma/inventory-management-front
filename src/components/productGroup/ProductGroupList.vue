@@ -176,11 +176,14 @@ export default {
     addNewProductGroupToList(pg) {
       this.productgroups.unshift(pg);
     },
-    deleteProductGroup(id) {
+    async deleteProductGroup(id) {
       this.$http
-        .delete("/productgroups/" + id)
+        .delete("/productgroups/" + id, this.config)
         .then((res) => {
-          console.log(res);
+          this.productgroups = this.productgroups.filter(
+            (val) => val.code !== id
+          );
+          alert(res.data);
         })
         .catch((err) => {
           console.error(err);

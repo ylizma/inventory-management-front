@@ -11,9 +11,12 @@
               class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
             >
               <th class="px-4 py-3">name</th>
-              <th class="px-4 py-3">description</th>
+              <th class="px-4 py-3">address</th>
+              <th class="px-4 py-3">city</th>
+              <th class="px-4 py-3">phone</th>
+              <th class="px-4 py-3">fax</th>
+              <th class="px-4 py-3">date</th>
               <th class="px-4 py-3">active</th>
-              <th class="px-4 py-3">Date</th>
               <th class="px-4 py-3">Actions</th>
             </tr>
           </thead>
@@ -22,19 +25,31 @@
           >
             <tr
               class="text-gray-700 dark:text-gray-400"
-              v-for="(warehouse, index) in warehouses"
+              v-for="(supplier, index) in suppliers"
               :key="index"
             >
               <td class="px-4 py-3">
-                {{ warehouse.name }}
+                {{ supplier.name }}
               </td>
               <td class="px-4 py-3 text-sm">
-                {{ warehouse.description || "no description" }}
+                {{ supplier.address }}
+              </td>
+              <td class="px-4 py-3 text-sm">
+                {{ supplier.city }}
+              </td>
+              <td class="px-4 py-3 text-sm">
+                {{ supplier.phone }}
+              </td>
+              <td class="px-4 py-3 text-sm">
+                {{ supplier.fax }}
+              </td>
+              <td class="px-4 py-3 text-sm">
+                {{ supplier.createdAt.slice(0, 10) }}
               </td>
               <td class="px-4 py-3 text-xs">
                 <span
                   class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
-                  v-if="warehouse.active"
+                  v-if="supplier.active"
                 >
                   YES
                 </span>
@@ -45,16 +60,13 @@
                   NO
                 </span>
               </td>
-              <td class="px-4 py-3 text-sm" v-show="warehouse.createdAt">
-                {{ warehouse.createdAt.slice(0, 10) }}
-              </td>
               <td class="px-4 py-3">
                 <div class="flex items-center space-x-4 text-sm">
-                  <update-form :warehouse="warehouse" />
+                  <update-form :supplier="supplier" />
                   <button
                     class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                     aria-label="Delete"
-                    @click="deleteWarehouse(warehouse.id)"
+                    @click="deleteSupplier(supplier.id)"
                   >
                     <svg
                       class="w-5 h-5"
@@ -130,7 +142,7 @@
 
 <script>
 import SearchForm from "@/components/shared/SearchForm.vue";
-import UpdateForm from "@/components/warehouse/UpdateForm.vue";
+import UpdateForm from "@/components/supplier/UpdateForm.vue";
 export default {
   components: {
     SearchForm,
@@ -138,7 +150,7 @@ export default {
   },
   data() {
     return {
-      warehouses: [],
+      suppliers: [],
       config: {
         headers: {
           Authorization: "Bearer " + this.$store.getters.getToken,
@@ -152,9 +164,9 @@ export default {
   methods: {
     loadData() {
       this.$http
-        .get("/warehouses/all", this.config)
+        .get("/suppliers/all", this.config)
         .then((res) => {
-          this.warehouses = res.data;
+          this.suppliers = res.data;
         })
         .catch((err) => {
           if (err.response.status == 403) {
@@ -164,21 +176,21 @@ export default {
     },
     search(key) {
       if (key) {
-        this.warehouses = this.warehouses.filter((item) => {
-          return item.name.includes(key);
+        this.suppliers = this.suppliers.filter((item) => {
+          return item.name.includes(key) || item.phone.includes(key) || item.city.includes(key) ;
         });
       } else {
         this.loadData();
       }
     },
-    addNewWareHouseToList(wh) {
-      this.warehouses.unshift(wh);
+    addNewSupplierToList(pg) {
+      this.suppliers.unshift(pg);
     },
-    deleteWarehouse(id) {
+    deleteSupplier(id) {
       this.$http
-        .delete("/warehouses/" + id, this.config)
+        .delete("/suppliers/" + id,this.config)
         .then((res) => {
-          this.warehouses = this.warehouses.filter(
+          this.suppliers = this.suppliers.filter(
             (val) => val.id !== id
           );
           alert(res.data);

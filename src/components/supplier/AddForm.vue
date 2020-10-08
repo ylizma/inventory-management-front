@@ -5,7 +5,7 @@
         @click="isModalOpen = true"
         class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
       >
-        New Product Group
+        New Supplier
       </button>
     </div>
     <div
@@ -50,7 +50,7 @@
             <p
               class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300"
             >
-              Product Group Form
+              Supplier Form
             </p>
 
             <div class="px-4 py-3 mb-8 rounded-lg shadow-sm dark:bg-gray-800">
@@ -69,15 +69,57 @@
                 </div>
               </label>
               <label class="block text-sm pb-3">
-                <span class="text-gray-700 dark:text-gray-400">Code</span>
+                <span class="text-gray-700 dark:text-gray-400">address</span>
                 <!-- focus-within sets the color for the icon when input is focused -->
                 <div
                   class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
                 >
                   <input
                     class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                    placeholder="code"
-                    v-model="code"
+                    placeholder="address"
+                    v-model="address"
+                    required
+                  />
+                </div>
+              </label>
+              <label class="block text-sm pb-3">
+                <span class="text-gray-700 dark:text-gray-400">city</span>
+                <!-- focus-within sets the color for the icon when input is focused -->
+                <div
+                  class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
+                >
+                  <input
+                    class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                    placeholder="city"
+                    v-model="city"
+                    required
+                  />
+                </div>
+              </label>
+              <label class="block text-sm pb-3">
+                <span class="text-gray-700 dark:text-gray-400">phone</span>
+                <!-- focus-within sets the color for the icon when input is focused -->
+                <div
+                  class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
+                >
+                  <input
+                    class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                    placeholder="phone"
+                    v-model="phone"
+                    required
+                  />
+                </div>
+              </label>
+              <label class="block text-sm pb-3">
+                <span class="text-gray-700 dark:text-gray-400">fax</span>
+                <!-- focus-within sets the color for the icon when input is focused -->
+                <div
+                  class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
+                >
+                  <input
+                    class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                    placeholder="fax"
+                    v-model="fax"
                     required
                   />
                 </div>
@@ -131,7 +173,10 @@ export default {
     return {
       isModalOpen: false,
       name: "",
-      code: "",
+      address: "",
+      city:"",
+      fax:'',
+      phone:'',
       active: false,
       error: false,
       success: false,
@@ -139,28 +184,32 @@ export default {
     };
   },
   methods: {
-    async  sendData() {
+    sendData() {
       const config = {
         headers: {
           Authorization: "Bearer " + this.$store.getters.getToken,
         },
       };
-      const pgroup = {
+      const supplier = {
         name: this.name,
-        code: this.code,
+        address: this.address,
+        city: this.city,
+        fax:this.fax,
         active: this.active,
+        phone:this.phone
       };
       this.$http
-        .post("/productgroups/add", pgroup, config)
+        .post("/suppliers/add", supplier, config)
         .then((res) => {
-          this.msg = "the product group is successfully added !! ";
+          this.msg = "the supplier is successfully added !! ";
           this.success = true;
+          console.log(res.data);
           this.$emit('addToList',res.data)
         })
         .catch((err) => {
           if (err.response.status == 400) {
             console.error(err);
-            this.msg = "this product already exist !!";
+            this.msg = "this supplier already exist !!";
             this.error = true;
           } else if (err.response.status == 403) {
             this.$router.push({ name: 'login'});

@@ -28,7 +28,13 @@ const links = [
         name:'warehouse list',
         linkTo:'/warehouse',
         iconName:'warehouse'
+    },
+    {
+        name:'supplier list',
+        linkTo:'/supplier',
+        iconName:'warehouse'
     }
+
 ]
 
 export default links;

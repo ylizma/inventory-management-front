@@ -163,6 +163,8 @@ export default {
         .put("/warehouses/" + this.warehouse.id, warehouse, config)
         .then((res) => {
           console.log(res);
+          this.success = true;
+          this.msg = "the warehouse is successfuly updated";
         })
         .catch((err) => {
           if (err.response.status == 400) {

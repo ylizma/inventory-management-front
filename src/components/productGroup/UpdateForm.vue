@@ -155,12 +155,14 @@ export default {
         id: this.productGroup.id,
         name: this.productGroup.name,
         code: this.productGroup.code,
-        active: this.productGroup.active,
+        active: this.productGroup.active
       };
       this.$http
-        .put("/productgroups/"+this.productGroup.code, pgroup, config)
+        .put("/productgroups/" + this.productGroup.code, pgroup, config)
         .then((res) => {
           console.log(res);
+          this.success = true;
+          this.msg = "the product group is successfuly updated";
         })
         .catch((err) => {
           if (err.response.status == 400) {
