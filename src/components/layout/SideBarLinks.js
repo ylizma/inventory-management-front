@@ -5,19 +5,9 @@ const links = [
         iconName:'cubes'
     },
     {
-        name:'add Stock Movment',
-        linkTo:'/addstockmovement',
-        iconName:'plus-circle'
-    },
-    {
         name:'product list',
         linkTo:'/products',
         iconName:'shopping-cart'
-    },
-    {
-        name:'add product',
-        linkTo:'/addproduct',
-        iconName:'cart-plus'
     },
     {
         name:'product group list',
