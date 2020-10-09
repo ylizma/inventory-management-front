@@ -1,11 +1,21 @@
 <template>
-  <div class="pt-5">
+  <div class="">
     <div>
       <button
+        class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+        aria-label="Edit"
         @click="isModalOpen = true"
-        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
       >
-        New Product
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+          ></path>
+        </svg>
       </button>
     </div>
     <div
@@ -14,7 +24,7 @@
     >
       <!-- Modal -->
       <div
-        v-show="isModalOpen"
+        v-if="isModalOpen"
         @keydown.esc="isModalOpen = false"
         class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl"
         role="dialog"
@@ -63,7 +73,7 @@
                   <input
                     class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                     placeholder="Name"
-                    v-model="name"
+                    v-model="product.name"
                     required
                   />
                 </div>
@@ -77,13 +87,15 @@
                   <input
                     class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                     placeholder="code"
-                    v-model="code"
+                    v-model="product.code"
                     required
                   />
                 </div>
               </label>
               <label class="block text-sm pb-3">
-                <span class="text-gray-700 dark:text-gray-400">description</span>
+                <span class="text-gray-700 dark:text-gray-400"
+                  >description</span
+                >
                 <!-- focus-within sets the color for the icon when input is focused -->
                 <div
                   class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
@@ -91,7 +103,7 @@
                   <input
                     class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                     placeholder="description"
-                    v-model="description"
+                    v-model="product.description"
                     type="text"
                     required
                   />
@@ -107,7 +119,7 @@
                     class="block w-full  mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                     placeholder="quantity"
                     type="number"
-                    v-model="quantity"
+                    v-model="product.quantity"
                     required
                   />
                 </div>
@@ -119,10 +131,14 @@
                 </span>
                 <select
                   class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                  v-model="selectedWarehouse"
+                  v-model="product.wareHouse"
                   v-if="warehouses"
                 >
-                  <option v-for="(warehouse, index) in warehouses" :key="index" :value="warehouse">
+                  <option
+                    v-for="(warehouse, index) in warehouses"
+                    :key="index"
+                    :value="warehouse"
+                  >
                     {{ warehouse.name }}
                   </option>
                 </select>
@@ -134,10 +150,14 @@
                 </span>
                 <select
                   class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                  v-model="selectedProductg"
+                  v-model="product.productGroup"
                   v-if="productGroups"
                 >
-                  <option v-for="(pg, index) in productGroups" :key="index" :value="pg">
+                  <option
+                    v-for="(pg, index) in productGroups"
+                    :key="index"
+                    :value="pg"
+                  >
                     {{ pg.name }}
                   </option>
                 </select>
@@ -149,11 +169,15 @@
                 </span>
                 <select
                   class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                  v-model="selectedSupplier"
+                  v-model="product.supplier"
                   v-if="suppliers"
                 >
-                  <option v-for="(supplier, index) in suppliers" :key="index" :value="supplier">
-                    {{supplier.name}}
+                  <option
+                    v-for="(supplier, index) in suppliers"
+                    :key="index"
+                    :value="supplier"
+                  >
+                    {{ supplier.name }}
                   </option>
                 </select>
               </label>
@@ -191,47 +215,34 @@
 
 <script>
 export default {
+  props: ["product"],
   data() {
     return {
-      isModalOpen: false,
-      name: "",
-      code: "",
-      description: "",
-      quantity: 1,
       selectedWarehouse: "",
       selectedSupplier: "",
       selectedProductg: "",
       warehouses: [],
       suppliers: [],
       productGroups: [],
+      isModalOpen: false,
       error: false,
       success: false,
       msg: "",
     };
   },
   methods: {
-    async sendData() {
+    sendData() {
       const config = {
         headers: {
           Authorization: "Bearer " + this.$store.getters.getToken,
         },
       };
-      const product = {
-        name: this.name,
-        description: this.description,
-        code: this.code,
-        quantity: this.quantity,
-        wareHouse: this.selectedWarehouse,
-        supplier: this.selectedSupplier,
-        productGroup: this.selectedProductg,
-      };
-      console.log(product);
       this.$http
-        .post("/products/add", product, config)
+        .put("/products/" + this.product.code, this.product, config)
         .then((res) => {
-          this.msg = "the product is successfully added !! ";
+          console.log(res);
           this.success = true;
-          this.$emit("addToList", res.data);
+          this.msg = "the product is successfuly updated";
         })
         .catch((err) => {
           if (err.response.status == 400) {

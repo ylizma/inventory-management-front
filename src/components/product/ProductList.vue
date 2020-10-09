@@ -47,10 +47,14 @@
               </td>
               <td class="px-4 py-3">
                 <div class="flex items-center space-x-4 text-sm">
-                  <!-- <update-form :productGroup="pg" /> -->
+                  <!-- update form -->
+                  <update-form
+                    :product="p"
+                  />
                   <button
                     class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                     aria-label="Delete"
+                    @click="deleteProduct(p.code)"
                   >
                     <svg
                       class="w-5 h-5"
@@ -84,7 +88,13 @@
                   class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                   aria-label="Previous"
                   :class="pagination.lastPage ? 'disabled' : ''"
-                  @click="(pagination.currentPage>0)?(loadData(pagination.nextPage + pagination.currentPage-1)):''"
+                  @click="
+                    pagination.currentPage > 0
+                      ? loadData(
+                          pagination.nextPage + pagination.currentPage - 1
+                        )
+                      : ''
+                  "
                 >
                   <svg
                     class="w-4 h-4 fill-current"
@@ -100,14 +110,20 @@
                 </button>
               </li>
               <li class="lowercase">
-                {{pagination.currentPage +1}} of {{pagination.totalPages}}
+                {{ pagination.currentPage + 1 }} of {{ pagination.totalPages }}
               </li>
               <li>
                 <button
                   class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                   aria-label="Next"
                   :class="pagination.lastPage ? 'disabled' : ''"
-                  @click="(!pagination.lastPage)?(loadData(pagination.nextPage + pagination.currentPage+1)):''"
+                  @click="
+                    !pagination.lastPage
+                      ? loadData(
+                          pagination.nextPage + pagination.currentPage + 1
+                        )
+                      : ''
+                  "
                 >
                   <svg
                     class="w-4 h-4 fill-current"
@@ -132,11 +148,11 @@
 
 <script>
 import SearchForm from "@/components/shared/SearchForm.vue";
-// import UpdateForm from "@/components/productGroup/UpdateForm.vue";
+import UpdateForm from "@/components/product/UpdateForm.vue";
 export default {
   components: {
     SearchForm,
-    // UpdateForm,
+    UpdateForm,
   },
   data() {
     return {
@@ -193,11 +209,11 @@ export default {
     addNewProductToList(p) {
       this.products.unshift(p);
     },
-    async deleteProductGroup(id) {
+    async deleteProduct(code) {
       this.$http
-        .delete("/products/" + id, this.config)
+        .delete("/products/" + code, this.config)
         .then((res) => {
-          this.products = this.products.filter((val) => val.code !== id);
+          this.products = this.products.filter((val) => val.code !== code);
           alert(res.data);
         })
         .catch((err) => {
