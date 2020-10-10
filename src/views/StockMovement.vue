@@ -1,20 +1,23 @@
 <template>
 <div class="">
-    <add-form />
+    <add-form v-on:addToList="addNewStockm" />
+    <stock-movement-list ref="stockList" />
 </div>
 </template>
 
 <script>
-// import StockMovementTable from "@/components/stockMovement/StockMovementTable.vue";
+import StockMovementList from "@/components/stockMovement/StockMovementList.vue";
 import AddForm from "../components/stockMovement/AddForm.vue";
 
 export default {
   components: {
-    // StockMovementTable,
+    StockMovementList,
     AddForm
   },
-  created() {
-
+  methods: {
+    addNewStockm(sm){
+      this.$refs.stockList.addNewStockMovementToList(sm)
+    }
   },
 };
 </script>
