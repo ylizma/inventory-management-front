@@ -1,8 +1,9 @@
+import { Promise } from "core-js";
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from "axios";
 
 Vue.use(Vuex);
-
 
 export default new Vuex.Store({
   state: {
@@ -32,5 +33,21 @@ export default new Vuex.Store({
       return state.user;
     },
   },
-  actions: {},
+  actions: {
+    login(context, user) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("http://localhost:8080/stock-api/auth", user)
+          .then((res) => {
+            const token = res.data.token;
+            localStorage.setItem("access_token", token);
+            context.commit("retreiveToken", token);
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    },
+  },
 });

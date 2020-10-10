@@ -1,12 +1,17 @@
 <template>
-  <stock-movement-table />
+<div class="">
+    <add-form />
+</div>
 </template>
 
 <script>
-import StockMovementTable from "@/components/stockMovement/StockMovementTable.vue";
+// import StockMovementTable from "@/components/stockMovement/StockMovementTable.vue";
+import AddForm from "../components/stockMovement/AddForm.vue";
+
 export default {
   components: {
-    StockMovementTable,
+    // StockMovementTable,
+    AddForm
   },
   created() {
 

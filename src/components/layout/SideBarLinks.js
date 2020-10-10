@@ -22,7 +22,7 @@ const links = [
     {
         name:'supplier list',
         linkTo:'/supplier',
-        iconName:'warehouse'
+        iconName:'user-tag'
     }
 
 ]

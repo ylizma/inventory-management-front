@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Dashboard',
+    name: 'dashboard',
     component: Dashboard,
     children:[
       {
@@ -35,7 +35,12 @@ const routes = [
         name: 'product',
         component: () => import(/* webpackChunkName: "about" */ '../views/Product.vue')
       }
-    ]
+    ],
+  },
+  {
+    name:'Login',
+    path:'/login',
+    component:()=>import('../views/Login.vue')
   }
   
 ]
