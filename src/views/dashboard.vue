@@ -57,6 +57,7 @@
       </header>
       <main class="h-full overflow-y-auto">
         <div class="container px-6 mx-auto grid">
+          <charts v-if="currentRouteName === 'dashboard'" />
           <router-view />
         </div>
       </main>
@@ -68,15 +69,22 @@
 <script>
 import ProfileMenu from "@/components/layout/ProfileMenu.vue";
 import SideBarLink from "@/components/layout/SideBarLink.vue";
-import links from '@/components/layout/SideBarLinks.js'
+import links from '@/components/layout/SideBarLinks.js';
+import Charts from '@/views/Charts.vue';
 export default {
   components:{
     ProfileMenu,
-    SideBarLink
+    SideBarLink,
+    Charts
   },
+  computed: {
+    currentRouteName() {
+        return this.$route.name;
+    }
+},
   data() {
     return {
-      links:links
+      links:links,
     }
   },
 }
