@@ -8,7 +8,7 @@
       <div class="py-4 text-gray-500 dark:text-gray-400">
         <a
           class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
-          href="#"
+          href="/"
         >
           Stock-INO
         </a>
@@ -20,7 +20,7 @@
             ></span>
             <a
               class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-              href="index.html"
+              href="/"
             >
               <svg
                 class="w-5 h-5"

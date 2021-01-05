@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '../views/dashboard.vue';
+import store from '../store/index';
 
 Vue.use(VueRouter)
 
@@ -9,6 +10,9 @@ const routes = [
     path: '/',
     name: 'dashboard',
     component: Dashboard,
+    meta: {
+      requiresAuth: true
+    },
     children:[
       {
         path: '/movements',
@@ -33,7 +37,8 @@ const routes = [
       {
         path: '/products',
         name: 'product',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Product.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/Product.vue'),
+        
       }
     ],
   },
@@ -49,6 +54,18 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.logedIn) {
+      next()
+      return
+    }
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router;

@@ -85,13 +85,13 @@
               </div>
             </div>
             <div class="">
-              <p class="text-sm py-2 text-red-600" v-show="error">
+              <p class="text-sm py-2 text-red-600" v-if="error">
                 {{ msg }}
               </p>
             </div>
             <div class="mb-4 text-center">
               <button
-                class="transition duration-500 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                class="transition duration-500 bg-purple-500 hover:bg-purple-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
               >
                 Login
@@ -127,6 +127,8 @@ export default {
         })
         .catch((err) => {
           console.error(err);
+          this.msg = 'username or password are oncorrect !!!'
+          this.error = true
         });
     },
   },

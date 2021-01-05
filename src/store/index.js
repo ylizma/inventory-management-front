@@ -37,7 +37,7 @@ export default new Vuex.Store({
     login(context, user) {
       return new Promise((resolve, reject) => {
         axios
-          .post("http://localhost:8080/stock-api/auth", user)
+          .post("http://localhost:8787/stock-api/auth", user)
           .then((res) => {
             const token = res.data.token;
             localStorage.setItem("access_token", token);
