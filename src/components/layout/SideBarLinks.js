@@ -23,6 +23,11 @@ const links = [
         name:'supplier list',
         linkTo:'/supplier',
         iconName:'user-tag'
+    },
+    {
+        name:'users list',
+        linkTo:'/users',
+        iconName:'user'
     }
 
 ]

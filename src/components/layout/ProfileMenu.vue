@@ -4,19 +4,19 @@
     <li class="relative">
       <button
         class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
-        @click="open=!open"
-        @keydown.esc="open=!open"
+        @click="open = !open"
+        @keydown.esc="open = !open"
         aria-label="Account"
         aria-haspopup="true"
       >
         <img
-          class="object-cover w-8 h-8 rounded-full"
+          class="object-cover w-8 h-8 rounded-full flex"
           src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
           alt=""
           aria-hidden="true"
         />
       </button>
-      <div class="flex">ADMIN</div>
+      <div class="flex">{{ getUser.name }}</div>
       <template>
         <ul
           x-transition:leave="transition ease-in duration-150"
@@ -51,30 +51,7 @@
           <li class="flex">
             <a
               class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-              href="#"
-            >
-              <svg
-                class="w-4 h-4 mr-3"
-                aria-hidden="true"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                ></path>
-                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-              <span>Settings</span>
-            </a>
-          </li>
-          <li class="flex">
-            <a
-              class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-              href="#"
+              @click="logout"
             >
               <svg
                 class="w-4 h-4 mr-3"
@@ -100,12 +77,25 @@
 </template>
 
 <script>
+// import state from '../../store/index'
+import { mapGetters } from "vuex";
 export default {
-    data() {
-        return {
-            open:false
-        }
+  data() {
+    return {
+      open: false,
+      // user: getUser,
+    };
+  },
+  computed: {
+    // mix the getters into computed with object spread operator
+    ...mapGetters(["getUser"]),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("destroyToken");
+      this.$router.push("/login");
     },
+  },
 };
 </script>
 

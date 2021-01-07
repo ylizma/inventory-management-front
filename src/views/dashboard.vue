@@ -41,7 +41,8 @@
           </li>
         </ul>
         <ul>
-          <side-bar-link v-for="(link, index) in links" :key="index" :linkObject=link />
+          <side-bar-link v-for="(link, index) in otherLinks" :key="index" :linkObject=link />
+          <side-bar-link :linkObject=usersLink v-if="true" />
         </ul>
       </div>
     </aside>
@@ -71,6 +72,7 @@ import ProfileMenu from "@/components/layout/ProfileMenu.vue";
 import SideBarLink from "@/components/layout/SideBarLink.vue";
 import links from '@/components/layout/SideBarLinks.js';
 import Charts from '@/views/Charts.vue';
+import { mapGetters } from "vuex";
 export default {
   components:{
     ProfileMenu,
@@ -80,13 +82,18 @@ export default {
   computed: {
     currentRouteName() {
         return this.$route.name;
-    }
+    },
+    usersLink :()=> links.filter(link => link.name === 'users list')[0],
+    otherLinks :()=> links.filter(link => link.name !== 'users list'),
+    ...mapGetters([
+      "isAdmin"
+    ]),
 },
   data() {
     return {
       links:links,
     }
-  },
+  }
 }
 </script>
 <style>

@@ -2,6 +2,7 @@ import { Promise } from "core-js";
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 Vue.use(Vuex);
 
@@ -18,7 +19,7 @@ export default new Vuex.Store({
       state.token = null;
     },
     // --------------------------------------
-    getUser(state, user) {
+    setUser(state, user) {
       state.user = user;
     },
   },
@@ -29,9 +30,12 @@ export default new Vuex.Store({
     logedIn(state) {
       return state.token != null;
     },
-    user(state) {
+    getUser(state) {
       return state.user;
     },
+    isAdmin(state){
+      return state.user.roles.includes('ADMIN')
+    }
   },
   actions: {
     login(context, user) {
@@ -39,9 +43,16 @@ export default new Vuex.Store({
         axios
           .post("http://localhost:8787/stock-api/auth", user)
           .then((res) => {
-            const token = res.data.token;
+            var token = res.data.token;
+            var decoded = jwt_decode(token);
+            var tuser = {
+              name :decoded.sub,
+              roles: decoded.roles
+            }
+            context.commit("setUser",tuser);
             localStorage.setItem("access_token", token);
             context.commit("retreiveToken", token);
+            console.log(decoded);
             resolve(res);
           })
           .catch((err) => {
@@ -49,5 +60,10 @@ export default new Vuex.Store({
           });
       });
     },
+
+    destroyToken(context){
+      context.commit("destroyToken");
+      localStorage.removeItem("access_token");
+    }
   },
 });

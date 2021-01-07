@@ -14,9 +14,9 @@
 <script>
 import Icon from 'vue-awesome/components/Icon';
 export default {
+  props:["linkObject"],
   components:{
     'v-icon':Icon
   },
-  props:["linkObject"]
 }
 </script>

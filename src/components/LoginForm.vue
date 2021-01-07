@@ -117,7 +117,7 @@ export default {
   methods: {
     login() {
       const user = {
-        userName: this.username,
+        username: this.username,
         password: this.password,
       };
       this.$store
